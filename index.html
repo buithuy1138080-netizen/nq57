@@ -58,14 +58,14 @@ var GAS_URL = 'https://script.google.com/macros/s/AKfycbzuhy2Vt6nFW-RPz5ysUDlV_I
 // ============================================================
 function enterSystem(e){
   e.preventDefault();
-  if(!GAS_URL||GAS_URL==='PASTE_YOUR_GAS_EXEC_URL_HERE'){document.getElementById('errDiv').style.display='block';return;}
+  if(!GAS_URL||GAS_URL==='https://script.google.com/macros/s/AKfycbzuhy2Vt6nFW-RPz5ysUDlV_IGDljzztbHJRLuCxkbsa2WUeo6MMG27ZdGGvJlU8B-bpw/exec'){document.getElementById('errDiv').style.display='block';return;}
   var btn=document.getElementById('mainBtn');
   btn.style.opacity='.5';btn.style.pointerEvents='none';
   document.getElementById('loadingDiv').style.display='flex';
   window.location.href=GAS_URL;
 }
 window.addEventListener('load',function(){
-  if(GAS_URL&&GAS_URL!=='PASTE_YOUR_GAS_EXEC_URL_HERE'){
+  if(GAS_URL&&GAS_URL!=='https://script.google.com/macros/s/AKfycbzuhy2Vt6nFW-RPz5ysUDlV_IGDljzztbHJRLuCxkbsa2WUeo6MMG27ZdGGvJlU8B-bpw/exec'){
     setTimeout(function(){
       document.getElementById('loadingDiv').style.display='flex';
       document.getElementById('mainBtn').style.display='none';
