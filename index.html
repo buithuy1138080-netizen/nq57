@@ -1,52 +1,22 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>BCĐ NQ57 — Hệ thống Quản lý Nghị quyết 57</title>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* ... giữ nguyên toàn bộ style của bạn ... */
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="logo">🚀</div>
-  <div class="badge">Hệ thống đang hoạt động</div>
-  <h1>BCĐ NQ57<br>Bắc Hà</h1>
-  <p class="sub">Hệ thống quản lý Nghị quyết 57<br>UBND xã Bắc Hà — Quản lý V10</p>
-  <a class="btn" id="mainBtn" href="#" onclick="enterSystem(event)">
-    ⚡ Vào hệ thống
-  </a>
-  <div class="loading" id="loadingDiv">
-    <div class="spinner"></div>
-    <p>Đang kết nối hệ thống...</p>
-  </div>
-  <div class="err" id="errDiv">⚠️ Chưa cấu hình URL. Liên hệ quản trị viên.</div>
-  <div class="tags">
-    <span class="tag">🔒 Bảo mật</span>
-    <span class="tag">⚡ Realtime</span>
-    <span class="tag">👥 Đa phân quyền</span>
-    <span class="tag">📱 Mobile</span>
-  </div>
-</div>
 <script>
 var GAS_URL = 'https://script.google.com/macros/s/AKfycbx9W_z8IHFo18JrtMwXPtP5Hgph43BFT2mlLXoKzEB6EdHlbos7s9fEwNJRypfXtvcj0Q/exec';
 
 function enterSystem(e){
   e.preventDefault();
-  if(!GAS_URL || GAS_URL === 'https://script.google.com/macros/s/AKfycbx9W_z8IHFo18JrtMwXPtP5Hgph43BFT2mlLXoKzEB6EdHlbos7s9fEwNJRypfXtvcj0Q/exec') {
+
+  // Kiểm tra URL có tồn tại không
+  if(!GAS_URL){
     document.getElementById('errDiv').style.display = 'block';
     return;
   }
+
   var btn = document.getElementById('mainBtn');
   btn.style.opacity = '.5';
   btn.style.pointerEvents = 'none';
+
   document.getElementById('loadingDiv').style.display = 'flex';
+
+  // Chuyển hướng sang Apps Script
   window.location.href = GAS_URL;
 }
-
-// ĐÃ XÓA đoạn tự động chuyển hướng
 </script>
-</body>
-</html>
