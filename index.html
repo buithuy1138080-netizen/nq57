@@ -1,37 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>BCĐ NQ57 — Hệ thống Quản lý Nghị quyết 57</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080c18;--purple:#6366f1;--purple2:#8b5cf6;--cyan:#06b6d4;--text:#f1f5f9;--muted:#64748b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(99,102,241,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.06) 1px,transparent 1px);background-size:48px 48px;animation:gridMove 20s linear infinite;pointer-events:none}
+@keyframes gridMove{to{background-position:48px 48px}}
+.wrap{position:relative;text-align:center;padding:48px 32px;max-width:460px;width:100%;z-index:1}
+.logo{width:80px;height:80px;background:linear-gradient(135deg,var(--purple),var(--purple2));border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-size:36px;box-shadow:0 0 40px rgba(99,102,241,.4);animation:logoFloat 4s ease-in-out infinite}
+@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid rgba(99,102,241,.3);border-radius:20px;font-size:11px;color:var(--cyan);letter-spacing:.5px;text-transform:uppercase;font-weight:600;margin-bottom:16px}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-size:clamp(22px,5vw,30px);font-weight:800;line-height:1.2;margin-bottom:8px;letter-spacing:-.5px}
+.sub{font-size:14px;color:var(--muted);margin-bottom:36px;line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 32px;background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;border:none;border-radius:14px;font-family:'Be Vietnam Pro',sans-serif;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 32px rgba(99,102,241,.35)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(99,102,241,.5)}
+.loading{display:none;flex-direction:column;align-items:center;gap:12px;margin-top:24px}
+.spinner{width:40px;height:40px;border:3px solid rgba(99,102,241,.2);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-size:13px;color:var(--muted)}
+.tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:28px}
+.tag{padding:4px 10px;border:1px solid rgba(255,255,255,.08);border-radius:6px;font-size:11px;color:var(--muted)}
+.err{display:none;margin-top:20px;padding:12px 16px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;font-size:13px;color:#fca5a5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">🚀</div>
+  <div class="badge">Hệ thống đang hoạt động</div>
+  <h1>BCĐ NQ57<br>Bắc Hà</h1>
+  <p class="sub">Hệ thống quản lý Nghị quyết 57<br>UBND xã Bắc Hà — Quản lý V10</p>
+  <a class="btn" id="mainBtn" href="#" onclick="enterSystem(event)">
+    ⚡ Vào hệ thống
+  </a>
+  <div class="loading" id="loadingDiv">
+    <div class="spinner"></div>
+    <p>Đang kết nối hệ thống...</p>
+  </div>
+  <div class="err" id="errDiv">⚠️ Chưa cấu hình URL. Liên hệ quản trị viên.</div>
+  <div class="tags">
+    <span class="tag">🔒 Bảo mật</span>
+    <span class="tag">⚡ Realtime</span>
+    <span class="tag">👥 Đa phân quyền</span>
+    <span class="tag">📱 Mobile</span>
+  </div>
+</div>
 <script>
-  // URL của Cloudflare Worker (đã gán tên miền hoặc link .workers.dev)
-  const API_URL = 'https://api.xabacha.com'; 
-
-  async function submitForm(data) {
-    // Hiển thị loading (nếu bạn có spinner)
-    document.getElementById('loading').style.display = 'flex';
-
-    try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain' // Để tránh các kiểm tra CORS phức tạp
-        },
-        body: JSON.stringify({
-          action: 'addVanBanWithAuth', // Tên case trong Code.gs chính của bạn
-          params: data,
-          token: 'YOUR_SECRET_TOKEN' // Nếu bạn có thiết lập bảo mật
-        })
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        alert('Gửi dữ liệu thành công!');
-        // Code để reset form hoặc đóng modal...
-      } else {
-        alert('Lỗi: ' + (result.error || 'Không xác định'));
-      }
-    } catch (error) {
-      console.error('Lỗi kết nối:', error);
-      alert('Lỗi kết nối đến hệ thống. Vui lòng kiểm tra lại mạng.');
-    } finally {
-      document.getElementById('loading').style.display = 'none';
-    }
+// ============================================================
+// THAY DÒNG NÀY BẰNG URL /exec CỦA BẠN
+var GAS_URL = 'https://script.google.com/macros/s/AKfycbzcuDgNQLf208D-zcj5moB2B0CXIvTnGrLqDcjDjBENbUYhMVhpfVh7TNQuOzz49TMZZQ/exec';
+// ============================================================
+function enterSystem(e){
+  e.preventDefault();
+  if(!GAS_URL||GAS_URL==='https://script.google.com/macros/s/AKfycbzcuDgNQLf208D-zcj5moB2B0CXIvTnGrLqDcjDjBENbUYhMVhpfVh7TNQuOzz49TMZZQ/exec'){document.getElementById('errDiv').style.display='block';return;}
+  var btn=document.getElementById('mainBtn');
+  btn.style.opacity='.5';btn.style.pointerEvents='none';
+  document.getElementById('loadingDiv').style.display='flex';
+  window.location.href=GAS_URL;
+}
+window.addEventListener('load',function(){
+  if(GAS_URL&&GAS_URL!=='PASTE_YOUR_GAS_EXEC_URL_HERE'){
+    setTimeout(function(){
+      document.getElementById('loadingDiv').style.display='flex';
+      document.getElementById('mainBtn').style.display='none';
+      window.location.href=GAS_URL;
+    },800);
   }
+});
 </script>
+</body>
+</html>
