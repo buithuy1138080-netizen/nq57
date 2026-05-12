@@ -5,77 +5,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BCĐ NQ57 — Hệ thống Quản lý Nghị quyết 57</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  body {
-    font-family: sans-serif;
-  }
-  iframe {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body, html { height: 100%; width: 100%; overflow: hidden; font-family: 'Be Vietnam Pro', sans-serif; background: #080c18; }
+  /* Hiệu ứng Loading cho đẹp */
+  .loader-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-  /* Hiển thị loading trong lúc iframe tải */
-  .loading {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 9999;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #080c18;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
   }
   .spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid #e2e8f0;
-    border-top-color: #6366f1;
+    width: 50px; height: 50px;
+    border: 4px solid rgba(99,102,241,0.2);
+    border-top: 4px solid #6366f1;
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-bottom: 16px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
   }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  .loading p {
-    color: #64748b;
-    font-family: system-ui, sans-serif;
-  }
+  @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .loader-container p { color: #94a3b8; font-size: 14px; letter-spacing: 1px; }
+  /* Ẩn thanh cuộn nếu có */
+  iframe { width: 100%; height: 100%; border: none; display: block; }
 </style>
 </head>
 <body>
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-    <p>Đang tải hệ thống...</p>
-  </div>
-  
-  <iframe 
-    id="appFrame"
-    src="https://script.google.com/macros/s/AKfycbx9W_z8IHFo18JrtMwXPtP5Hgph43BFT2mlLXoKzEB6EdHlbos7s9fEwNJRypfXtvcj0Q/exec"
-    allow="camera; microphone; clipboard-read; clipboard-write"
-    sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-scripts allow-modals allow-downloads"
-  ></iframe>
 
-  <script>
-    var iframe = document.getElementById('appFrame');
-    var loadingDiv = document.getElementById('loading');
-    
-    // Khi iframe tải xong thì ẩn loading
-    iframe.onload = function() {
-      loadingDiv.style.display = 'none';
-    };
-    
-    // Nếu iframe lỗi hoặc không tải được sau 10 giây
+<div class="loader-container" id="loader">
+  <div class="spinner"></div>
+  <p>ĐANG KẾT NỐI HỆ THỐNG NQ57...</p>
+</div>
+
+<!-- 
+  ⚠️ QUAN TRỌNG: THAY URL DƯỚI ĐÂY BẰNG URL GOOGLE APPS SCRIPT CỦA BẠN
+-->
+<iframe id="appFrame" src="https://script.google.com/macros/s/AKfycbx9W_z8IHFo18JrtMwXPtP5Hgph43BFT2mlLXoKzEB6EdHlbos7s9fEwNJRypfXtvcj0Q/exec" allow="camera; microphone; clipboard-read; clipboard-write" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-downloads"></iframe>
+
+<script>
+  var iframe = document.getElementById('appFrame');
+  var loader = document.getElementById('loader');
+  var isError = false;
+
+  // Hàm xử lý lỗi khi iframe không load được
+  function showError() {
+    if(isError) return;
+    isError = true;
+    loader.innerHTML = `
+      <div style="text-align: center; padding: 20px;">
+        <div style="font-size: 48px; margin-bottom: 20px;">⚠️</div>
+        <h2 style="color: #f1f5f9; margin-bottom: 10px;">Không thể tải hệ thống</h2>
+        <p style="color: #94a3b8; margin-bottom: 20px;">Có vẻ như mạng của bạn đang chặn kết nối.<br>Hãy thử chuyển sang mạng 4G/5G hoặc liên hệ quản trị viên.</p>
+        <button onclick="location.reload()" style="padding: 10px 24px; background: #6366f1; color: white; border: none; border-radius: 8px; cursor: pointer;">Thử lại</button>
+      </div>
+    `;
+  }
+
+  // Nếu iframe tải thành công, ẩn loading sau 1 giây
+  iframe.onload = function() {
     setTimeout(function() {
-      if (loadingDiv.style.display !== 'none') {
-        loadingDiv.innerHTML = '<div style="color:#ef4444;">⚠️ Không thể kết nối đến hệ thống. Vui lòng thử lại sau.</div>';
-      }
-    }, 10000);
-  </script>
+      if(!isError) loader.style.display = 'none';
+    }, 800);
+  };
+
+  // Nếu sau 8 giây mà iframe vẫn chưa load (có thể do bị chặn), báo lỗi
+  setTimeout(function() {
+    if(loader.style.display !== 'none') {
+      showError();
+    }
+  }, 8000);
+</script>
 </body>
 </html>
