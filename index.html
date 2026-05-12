@@ -2,58 +2,80 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BCĐ NQ57 — Hệ thống Quản lý Nghị quyết 57</title>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#080c18;--purple:#6366f1;--purple2:#8b5cf6;--cyan:#06b6d4;--text:#f1f5f9;--muted:#64748b}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100vh;overflow:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(99,102,241,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.06) 1px,transparent 1px);background-size:48px 48px;animation:gridMove 20s linear infinite;pointer-events:none}
-@keyframes gridMove{to{background-position:48px 48px}}
-.wrap{position:relative;text-align:center;padding:48px 32px;max-width:460px;width:100%;z-index:1}
-.logo{width:80px;height:80px;background:linear-gradient(135deg,var(--purple),var(--purple2));border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;font-size:36px;box-shadow:0 0 40px rgba(99,102,241,.4);animation:logoFloat 4s ease-in-out infinite}
-@keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid rgba(99,102,241,.3);border-radius:20px;font-size:11px;color:var(--cyan);letter-spacing:.5px;text-transform:uppercase;font-weight:600;margin-bottom:16px}
-.badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:pulse 2s ease infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-h1{font-size:clamp(22px,5vw,30px);font-weight:800;line-height:1.2;margin-bottom:8px;letter-spacing:-.5px}
-.sub{font-size:14px;color:var(--muted);margin-bottom:36px;line-height:1.6}
-.loading{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:24px}
-.spinner{width:40px;height:40px;border:3px solid rgba(99,102,241,.2);border-top-color:var(--purple);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading p{font-size:13px;color:var(--muted)}
-.tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:28px}
-.tag{padding:4px 10px;border:1px solid rgba(255,255,255,.08);border-radius:6px;font-size:11px;color:var(--muted)}
-.btn{display:none}
-.err{display:none}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: sans-serif;
+  }
+  iframe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  /* Hiển thị loading trong lúc iframe tải */
+  .loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 9999;
+  }
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 16px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  .loading p {
+    color: #64748b;
+    font-family: system-ui, sans-serif;
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="logo">🚀</div>
-  <div class="badge">Hệ thống đang hoạt động</div>
-  <h1>BCĐ NQ57<br>Bắc Hà</h1>
-  <p class="sub">Hệ thống quản lý Nghị quyết 57<br>UBND xã Bắc Hà — Quản lý V10</p>
-  <div class="loading">
+  <div class="loading" id="loading">
     <div class="spinner"></div>
-    <p>Đang kết nối hệ thống...</p>
+    <p>Đang tải hệ thống...</p>
   </div>
-  <div class="tags">
-    <span class="tag">🔒 Bảo mật</span>
-    <span class="tag">⚡ Realtime</span>
-    <span class="tag">👥 Đa phân quyền</span>
-    <span class="tag">📱 Mobile</span>
-  </div>
-</div>
-<script>
-// ============================================================
-// ⚠️ QUAN TRỌNG: Thay URL dưới đây bằng URL thật của Google Apps Script
-// ============================================================
-var GAS_URL = 'https://script.google.com/macros/s/AKfycbx9W_z8IHFo18JrtMwXPtP5Hgph43BFT2mlLXoKzEB6EdHlbos7s9fEwNJRypfXtvcj0Q/exec';
+  
+  <iframe 
+    id="appFrame"
+    src="https://script.google.com/macros/s/AKfycbx9W_z8IHFo18JrtMwXPtP5Hgph43BFT2mlLXoKzEB6EdHlbos7s9fEwNJRypfXtvcj0Q/exec"
+    allow="camera; microphone; clipboard-read; clipboard-write"
+    sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-scripts allow-modals allow-downloads"
+  ></iframe>
 
-// Tự động chuyển hướng sang hệ thống ngay khi trang tải xong
-window.location.href = GAS_URL;
-</script>
+  <script>
+    var iframe = document.getElementById('appFrame');
+    var loadingDiv = document.getElementById('loading');
+    
+    // Khi iframe tải xong thì ẩn loading
+    iframe.onload = function() {
+      loadingDiv.style.display = 'none';
+    };
+    
+    // Nếu iframe lỗi hoặc không tải được sau 10 giây
+    setTimeout(function() {
+      if (loadingDiv.style.display !== 'none') {
+        loadingDiv.innerHTML = '<div style="color:#ef4444;">⚠️ Không thể kết nối đến hệ thống. Vui lòng thử lại sau.</div>';
+      }
+    }, 10000);
+  </script>
 </body>
 </html>
